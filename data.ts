@@ -1,3 +1,4 @@
+import { Timestamp } from "firebase/firestore";
 import { Loan } from "@/types";
 
 export const loans: Loan[] = [
@@ -6,9 +7,10 @@ export const loans: Loan[] = [
         title: 'Cristian',
         description: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptates temporibus, magnam corporis eum deserunt natus autem minus numquam, ratione mollitia sequi amet doloremque nesciunt in eius tempora, voluptas quaerat dolor!',
         total: 200,
-        months: 2,
         interest: 0.15, // 15%
         status: 'active',
+        startDate: Timestamp.fromDate(new Date('2025-03-18')),
+        endDate: Timestamp.fromDate(new Date('2025-05-18')),
         payments: [
             {
                 id: '1',
@@ -28,9 +30,10 @@ export const loans: Loan[] = [
         title: 'Khomatsu',
         description: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit.',
         total: 600.50,
-        months: 12,
         interest: 0.15, // 15%
         status: 'completed',
+        startDate: Timestamp.fromDate(new Date('2025-03-18')),
+        endDate: Timestamp.fromDate(new Date('2025-05-18')),
         payments: [
             {
                 id: '1',

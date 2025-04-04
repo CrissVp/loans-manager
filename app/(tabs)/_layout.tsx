@@ -20,7 +20,6 @@ export default function TabsLayout() {
                 name="index"
                 options={{
                     title: 'Home',
-                    // headerShown: false,
                     tabBarIcon: ({ color }) => <MaterialIcons name="home" color={color} size={26} />
                 }}
             />
@@ -28,7 +27,6 @@ export default function TabsLayout() {
                 name="expenses"
                 options={{
                     title: 'Expenses',
-                    // headerShown: false,
                     tabBarIcon: ({ color }) => <MaterialIcons name="attach-money" color={color} size={26} />
                 }}
             />
