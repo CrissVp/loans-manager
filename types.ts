@@ -1,44 +1,50 @@
-import type { Timestamp } from 'firebase/firestore'
+import type { Timestamp } from 'firebase/firestore';
 
 export type Status = 'active' | 'completed';
 
 export interface Loan {
-    id: string
-    title: string
-    description: string
-    total: number
-    interest: number
-    status: Status
-    startDate: Timestamp
-    endDate: Timestamp
-    payments: Payment[]
+  id: string;
+  title: string;
+  description: string;
+  total: number;
+  interest: number;
+  status: Status;
+  startDate: Timestamp;
+  endDate: Timestamp;
+  payments: Payment[];
 }
 
 export interface Payment {
-    id: string
-    amount: number
-    title: string
-    date: Timestamp
+  id: string;
+  amount: number;
+  title: string;
+  date: Timestamp;
 }
 
 export interface FetchState<T> {
-    data: T | null;
-    isLoading: boolean;
-    error: string | undefined
-};
-
-export interface DataContextType {
-    loans: FetchState<Loan[]>,
-    setLoans: React.Dispatch<React.SetStateAction<FetchState<Loan[]>>>
+  data: T | null;
+  isLoading: boolean;
+  error: string | undefined;
 }
 
-export type CreateLoanFields = Pick<Loan, 'title' | 'total' | 'interest' | 'description'> & { endDate: Date };
-export type CreatePaymentFields = Pick<Payment, 'amount' | 'title'>;
+export interface DataContextType {
+  loans: FetchState<Loan[]>;
+  selectedLoan: FetchState<Loan>;
+  setLoans: React.Dispatch<React.SetStateAction<FetchState<Loan[]>>>;
+  setSelectedLoan: React.Dispatch<React.SetStateAction<FetchState<Loan>>>;
+}
+
+export type CreateLoanFields = Pick<Loan, 'title' | 'total' | 'interest' | 'description'> & {
+  endDate: Date;
+};
+
+export type CreatePaymentFields = Pick<Payment, 'amount' | 'title'> & {
+  date: Date;
+};
 
 export enum Period {
-    Daily = 'days',
-    Weekly = 'weeks',
-    Fortnightly = 'fortnights',
-    Monthly = 'months',
-    Yearly = 'years'
+  Daily = 'days',
+  Weekly = 'weeks',
+  Fortnightly = 'fortnights',
+  Monthly = 'months',
 }

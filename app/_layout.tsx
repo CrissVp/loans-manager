@@ -6,10 +6,10 @@ import { View } from "react-native";
 export default function RootLayout() {
   return (
     <DataContextProvider>
-      <View style={{ flex: 1, backgroundColor: Colors.darkGray }}>
+      <View style={{ flex: 1, backgroundColor: Colors.darkBlue800 }}>
         <Stack screenOptions={{
-          navigationBarColor: Colors.darkGray,
-          statusBarBackgroundColor: Colors.darkGray
+          navigationBarColor: Colors.darkBlue800,
+          statusBarBackgroundColor: Colors.darkBlue800
         }}>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="+not-found" options={{ headerShown: false }} />
@@ -17,7 +17,7 @@ export default function RootLayout() {
             headerShown: true,
             headerStyle: {
               backgroundColor:
-                Colors.darkGray
+                Colors.darkBlue800
             },
             headerTintColor: Colors.white,
             title: 'Loan Details'
@@ -26,7 +26,7 @@ export default function RootLayout() {
             headerShown: true,
             headerStyle: {
               backgroundColor:
-                Colors.darkGray
+                Colors.darkBlue800
             },
             headerTintColor: Colors.white,
             title: 'Create Loan'
@@ -35,7 +35,7 @@ export default function RootLayout() {
             headerShown: true,
             headerStyle: {
               backgroundColor:
-                Colors.darkGray
+                Colors.darkBlue800
             },
             headerTintColor: Colors.white,
             title: 'Create Payment'

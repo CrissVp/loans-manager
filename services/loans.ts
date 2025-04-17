@@ -1,63 +1,80 @@
-import { addDoc, collection, doc, getDoc, getDocs, Timestamp } from "firebase/firestore";
-import { CreateLoanFields, CreatePaymentFields, Loan, Payment } from "@/types";
-import { db } from "@/utils/firebaseConfig";
+import { CreateLoanFields, CreatePaymentFields, Loan, Payment } from '@/types';
+import { db } from '@/utils/firebaseConfig';
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  orderBy,
+  query,
+  Timestamp,
+} from 'firebase/firestore';
 
 export async function addNewLoan(loan: CreateLoanFields) {
-    if (!loan.title || !loan.description || !loan.total || !loan.interest) return;
+  if (!loan.title || !loan.description || !loan.total || !loan.interest) return;
 
-    try {
-        const newLoan: Omit<Loan, 'id'> = {
-            ...loan,
-            status: "active",
-            startDate: Timestamp.fromDate(new Date()),
-            endDate: Timestamp.fromDate(loan.endDate),
-            payments: []
-        }
+  try {
+    const newLoan: Omit<Loan, 'id'> = {
+      ...loan,
+      status: 'active',
+      startDate: Timestamp.fromDate(new Date()),
+      endDate: Timestamp.fromDate(loan.endDate),
+      payments: [],
+    };
 
-        const docRef = await addDoc(collection(db, 'loans'), newLoan);
-        const docData = await getDoc(docRef);
-        if (!docData.exists()) return null;
+    const docRef = await addDoc(collection(db, 'loans'), newLoan);
+    const docData = await getDoc(docRef);
+    if (!docData.exists()) return null;
 
-        return { id: docData.id, ...docData.data() } as Loan;
-    } catch (error) {
-        throw new Error('Error creating loan: ' + error)
-    }
-};
+    return { id: docData.id, ...docData.data() } as Loan;
+  } catch (error) {
+    throw new Error('Error creating loan: ' + error);
+  }
+}
 
 export async function getLoans(): Promise<Loan[]> {
-    try {
-        const result = await getDocs(collection(db, 'loans'));
-        return result.docs.map((doc) => ({ id: doc.id, ...doc.data() } as Loan));
-    } catch (error) {
-        throw new Error('Error getting loans: ' + error);
-    }
+  try {
+    const result = await getDocs(query(collection(db, 'loans'), orderBy('startDate', 'desc')));
+    return result.docs.map((doc) => ({ id: doc.id, ...doc.data() } as Loan));
+  } catch (error) {
+    throw new Error('Error getting loans: ' + error);
+  }
 }
 
 export async function getLoanById(id: string): Promise<Loan | null> {
-    try {
-        const result = await getDoc(doc(db, 'loans', id));
-        if (!result.exists()) return null;
+  try {
+    const result = await getDoc(doc(db, 'loans', id));
+    if (!result.exists()) return null;
 
-        const paymentsResult = await getDocs(collection(db, 'loans', id, 'payments'));
-        const payments = paymentsResult.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as Payment)
+    const paymentsResult = await getDocs(
+      query(collection(db, 'loans', id, 'payments'), orderBy('date', 'desc'))
+    );
 
-        return { id: result.id, ...result.data(), payments } as Loan;
-    } catch (error) {
-        throw new Error('Error getting loan: ' + error);
-    }
+    const payments = paymentsResult.docs.map((doc) => ({ id: doc.id, ...doc.data() } as Payment));
+
+    return { id: result.id, ...result.data(), payments } as Loan;
+  } catch (error) {
+    throw new Error('Error getting loan: ' + error);
+  }
 }
 
-export async function addLoanPayment(loanId: string, payment: CreatePaymentFields) {
-    if (!payment.title || !payment.amount) return;
+export async function addLoanPayment(
+  loanId: string,
+  payment: CreatePaymentFields
+): Promise<Payment | null> {
+  if (!payment.title || !payment.amount || !payment.date) {
+    throw new Error('There are required fields missing');
+  }
 
-    try {
-        const newPayment: Omit<Payment, 'id'> = {
-            ...payment,
-            date: Timestamp.fromDate(new Date())
-        };
+  try {
+    const docRef = await addDoc(collection(db, 'loans', loanId, 'payments'), payment);
+    const docData = await getDoc(docRef);
 
-        return await addDoc(collection(db, 'loans', loanId, 'payments'), newPayment);
-    } catch (error) {
-        throw new Error('Error creating payment: ' + error)
-    }
+    if (!docData.exists()) return null;
+    return { id: docRef.id, ...docData.data() } as Payment;
+  } catch (error) {
+    console.log({ error });
+    throw new Error('Error creating payment');
+  }
 }
