@@ -38,7 +38,8 @@ export async function getLoans(): Promise<Loan[]> {
     const result = await getDocs(query(collection(db, 'loans'), orderBy('startDate', 'desc')));
     return result.docs.map((doc) => ({ id: doc.id, ...doc.data() } as Loan));
   } catch (error) {
-    throw new Error('Error getting loans: ' + error);
+    console.log({ error });
+    throw new Error('There was an error retrieving loans.');
   }
 }
 

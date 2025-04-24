@@ -1,3 +1,4 @@
+import type { User } from '@firebase/auth';
 import type { Timestamp } from 'firebase/firestore';
 
 export type Status = 'active' | 'completed';
@@ -32,6 +33,11 @@ export interface DataContextType {
   selectedLoan: FetchState<Loan>;
   setLoans: React.Dispatch<React.SetStateAction<FetchState<Loan[]>>>;
   setSelectedLoan: React.Dispatch<React.SetStateAction<FetchState<Loan>>>;
+}
+
+export interface AuthContextType {
+  user: User | null;
+  loading: boolean;
 }
 
 export type CreateLoanFields = Pick<Loan, 'title' | 'total' | 'interest' | 'description'> & {
