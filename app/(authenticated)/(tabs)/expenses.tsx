@@ -1,4 +1,4 @@
-import { Text, ScrollView } from 'react-native';
+import { Text, ScrollView, View } from 'react-native';
 
 const Expenses = () => {
   return (
