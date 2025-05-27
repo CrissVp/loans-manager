@@ -1,6 +1,7 @@
 import { LineChart, lineDataItem } from 'react-native-gifted-charts';
 import { Colors } from '@/constants/colors';
 import { Dimensions } from 'react-native';
+import { transform } from '@babel/core';
 
 interface ChartProps {
   data: number[];
@@ -33,7 +34,7 @@ export default function LinearChart({ data, style = 'number' }: ChartProps) {
       height={150}
       data={chartData}
       noOfSections={5}
-      width={width - 80}
+      width={width - 60}
       animateOnDataChange
       maxValue={maxValueChart}
       renderDataPointsAfterAnimationEnds={true}
@@ -41,14 +42,14 @@ export default function LinearChart({ data, style = 'number' }: ChartProps) {
       animationDuration={300}
       onDataChangeAnimationDuration={300}
       animateTogether={true}
-      yAxisLabelWidth={36}
-      yAxisTextStyle={{ color: '#07BAD1', fontSize: 8 }}
+      yAxisLabelWidth={-2}
+      yAxisTextStyle={{ color: '#07BAD1', fontSize: 10 }}
       yAxisLabelTexts={yAxisLabelTexts}
       startFillColor={'rgb(84,219,234)'}
       endFillColor={'rgb(84,219,234)'}
       startOpacity={0.4}
       endOpacity={0.1}
-      xAxisLabelsVerticalShift={0}
+      hideOrigin
       showVerticalLines
       verticalLinesColor={'rgba(118, 134, 165, 0.4)'}
       rulesColor={'rgba(118, 134, 165, 0.4)'}

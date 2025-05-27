@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     paddingBlock: 0,
     borderRadius: 10,
     borderWidth: 0.6,
-    // paddingInline: 4,
+    paddingInline: 14,
     borderColor: Colors.lightGray,
     backgroundColor: Colors.darkBlue400,
   },
