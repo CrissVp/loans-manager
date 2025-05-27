@@ -17,6 +17,7 @@ import { Colors } from '@/constants/colors';
 import useLoan from '@/hooks/useLoan';
 
 import DatePicker from '@/components/DatePicker';
+import { useZustandLoan } from '@/hooks/useLoanStore';
 
 const schema = z.object({
   date: z.date(),
@@ -27,9 +28,9 @@ const schema = z.object({
 });
 
 export default function CreatePayment() {
-  const { back } = useRouter();
+  const { back, dismiss } = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { addPayment } = useLoan(id, { allowRefetch: false });
+  const { addPayment } = useZustandLoan(id);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -51,7 +52,7 @@ export default function CreatePayment() {
     const addedPayment = await addPayment({ ...data, amount: Number(data.amount) });
 
     setIsLoading(false);
-    back();
+    dismiss();
   };
 
   return (

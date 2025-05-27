@@ -9,9 +9,10 @@ import useLoans from '@/hooks/useLoans';
 import ErrorScreen from '@/components/ErrorScreen';
 import AddButton from '@/components/AddButton';
 import Loader from '@/components/Loader';
+import { useZustandLoans } from '@/hooks/useLoanStore';
 
 export default function Loans() {
-  const { loans } = useLoans();
+  const { loans } = useZustandLoans();
   const { navigate } = useRouter();
 
   if (loans.isLoading) return <Loader />;

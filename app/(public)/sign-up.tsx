@@ -2,7 +2,7 @@ import { View, TextInput, TouchableOpacity, Text, StyleSheet } from 'react-nativ
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, Controller } from 'react-hook-form';
 import { Colors } from '@/constants/colors';
-import { useRouter } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 import { z } from 'zod';
 
 import useAuth from '@/hooks/useAuth';
@@ -43,6 +43,14 @@ export default function SignUp() {
 
   return (
     <View style={styles.container}>
+      <Stack.Screen
+        name='sign-up'
+        options={{
+          headerShown: false,
+          statusBarStyle: 'light',
+          statusBarBackgroundColor: Colors.darkBlue100,
+        }}
+      />
       <View style={styles.header}>
         <Text style={styles.heading}>Create Your</Text>
         <Text style={styles.heading}>Account</Text>

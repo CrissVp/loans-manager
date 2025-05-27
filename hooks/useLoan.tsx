@@ -37,24 +37,21 @@ export default function useLoan(id: string, options = { allowRefetch: true }) {
 
   const addPayment = async (payment: CreatePaymentFields) => {
     try {
-      const addedPayment = await addLoanPayment(id, payment);
+      const updatedLoan = await addLoanPayment(id, payment);
 
-      if (addedPayment) {
+      if (updatedLoan) {
         setState((oldData) => {
           if (!oldData.data) return oldData;
 
           return {
-            data: {
-              ...oldData.data,
-              payments: [addedPayment, ...oldData.data.payments],
-            },
+            data: updatedLoan,
             error: undefined,
             isLoading: false,
           };
         });
       }
 
-      return addedPayment;
+      return updatedLoan;
     } catch (error) {
       setState((oldData) => ({
         data: oldData.data,

@@ -1,24 +1,21 @@
 import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
-import { Redirect, useRouter } from 'expo-router';
+import { useRouter, Stack } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '@/constants/colors';
 
-import Loader from '@/components/Loader';
-import useAuth from '@/hooks/useAuth';
-
-export default function Index() {
+export default function Landing() {
   const { navigate } = useRouter();
-  // const { user, loading } = useAuth();
-
-  // if (loading) return <Loader />;
-
-  // if (user) {
-  //   console.log('Redirecting to /(authenticated)/(tabs)');
-  //   return <Redirect href={'/(authenticated)/(tabs)'} />;
-  // }
 
   return (
     <View style={styles.container}>
+      <Stack.Screen
+        name='landing'
+        options={{
+          headerShown: false,
+          statusBarStyle: 'light',
+          statusBarBackgroundColor: Colors.darkBlue800,
+        }}
+      />
       <View style={styles.logoContainer}>
         <Ionicons name='logo-react' size={64} color={Colors.lightBlue} />
         <Text style={styles.logoText}>LOANS MANAGER</Text>

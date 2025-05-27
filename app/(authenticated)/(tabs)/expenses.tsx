@@ -1,7 +1,11 @@
-import { Text } from "react-native";
+import { Text, ScrollView } from 'react-native';
 
-export default function Expenses() {
-    return (
-        <Text>Expenses</Text>
-    )
-}
+const Expenses = () => {
+  return (
+    <ScrollView style={{ flex: 1, backgroundColor: '#121212', padding: 20 }}>
+      <Text style={{ color: '#fff', fontSize: 24, marginBottom: 20 }}>Expenses</Text>
+    </ScrollView>
+  );
+};
+
+export default Expenses;

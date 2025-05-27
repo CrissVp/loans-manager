@@ -11,19 +11,21 @@ import useLoan from '@/hooks/useLoan';
 import ErrorScreen from '@/components/ErrorScreen';
 import Payments from '@/components/Payments';
 import Loader from '@/components/Loader';
+import { useZustandLoan } from '@/hooks/useLoanStore';
 
 export default function LoanDetails() {
   const { navigate } = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
 
-  const {
-    state: { data: loan, isLoading, error },
-  } = useLoan(id);
+  // const {
+  //   state: { data: loan, isLoading, error },
+  // } = useLoan(id);
+  const { loan } = useZustandLoan(id);
 
   const [periodType, setPeriodType] = useState<Period>(Period.Monthly);
 
-  if (isLoading) return <Loader />;
-  if (error || !loan) return <ErrorScreen message={error} />;
+  // if (isLoading) return <Loader />;
+  if (!loan) return <ErrorScreen message={'Error getting loan data'} />;
 
   const timeFrame = getTimeframe(loan.startDate, loan.endDate);
   const profit = getProfit(loan.total, loan.interest, timeFrame.months);

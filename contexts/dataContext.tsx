@@ -15,7 +15,7 @@ export function DataContextProvider({ children }: { children: Readonly<ReactNode
     isLoading: true,
     error: undefined,
   });
-  
+
   // const [clients, setClients] = useState([]);
 
   return (

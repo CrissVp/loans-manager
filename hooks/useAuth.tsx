@@ -13,7 +13,6 @@ export default function useAuth() {
   const signIn = async (email: string, password: string) => {
     try {
       const res = await signInWithEmailAndPassword(firebaseAuth, email, password);
-      console.log({ res });
     } catch (error) {
       console.log('Login Error: ' + { error });
     }

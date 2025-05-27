@@ -1,29 +1,27 @@
+import Loader from '@/components/Loader';
 import { Colors } from '@/constants/colors';
-import { Stack } from 'expo-router';
+import { Redirect, Slot, Stack } from 'expo-router';
 import { View } from 'react-native';
+import useAuth from '@/hooks/useAuth';
 
 export default function PublicLayout() {
+  const { user, loading } = useAuth();
+
+  if (loading) return <Loader />;
+
+  if (user) {
+    return <Redirect href='/(authenticated)/(tabs)' />;
+  }
+
   return (
     <View style={{ flex: 1, backgroundColor: Colors.darkBlue800 }}>
-      <Stack>
-        <Stack.Screen name='index' options={{ headerShown: false }} />
-        <Stack.Screen
-          name='sign-in'
-          options={{
-            headerShown: false,
-            statusBarStyle: 'light',
-            statusBarBackgroundColor: Colors.darkBlue100,
-          }}
-        />
-        <Stack.Screen
-          name='sign-up'
-          options={{
-            headerShown: false,
-            statusBarStyle: 'light',
-            statusBarBackgroundColor: Colors.darkBlue100,
-          }}
-        />
-      </Stack>
+      <Stack
+        screenOptions={{
+          statusBarAnimation: 'fade',
+          navigationBarColor: Colors.darkBlue800,
+          statusBarBackgroundColor: Colors.darkBlue800,
+        }}
+      />
     </View>
   );
 }

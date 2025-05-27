@@ -1,20 +1,31 @@
 import { DataContextProvider } from '@/contexts/dataContext';
-import { Colors } from '@/constants/colors';
-import { Stack } from 'expo-router';
+import { Redirect, Stack } from 'expo-router';
 import { View } from 'react-native';
-import useAuth from '@/hooks/useAuth';
+
+import { Colors } from '@/constants/colors';
 import Loader from '@/components/Loader';
+import useAuth from '@/hooks/useAuth';
 
 export default function AuthLayout() {
   const { user, loading } = useAuth();
 
   if (loading) return <Loader />;
-  if (!user) return null;
+
+  if (!user) {
+    return <Redirect href='/(public)/landing' />;
+  }
 
   return (
-    <DataContextProvider>
-      <View style={{ flex: 1, backgroundColor: Colors.darkBlue800 }}>
-        <Stack>
+    <View style={{ flex: 1, backgroundColor: Colors.darkBlue800 }}>
+      <DataContextProvider>
+        <Stack
+          screenOptions={{
+            animation: 'fade',
+            statusBarAnimation: 'fade',
+            navigationBarColor: Colors.darkBlue800,
+            statusBarBackgroundColor: Colors.darkBlue800,
+          }}
+        >
           <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
           <Stack.Screen
             name='loan-details/[id]'
@@ -50,7 +61,7 @@ export default function AuthLayout() {
             }}
           />
         </Stack>
-      </View>
-    </DataContextProvider>
+      </DataContextProvider>
+    </View>
   );
 }

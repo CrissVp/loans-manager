@@ -1,4 +1,4 @@
-import { useRouter, useSegments } from 'expo-router';
+import { usePathname, useRouter, useSegments } from 'expo-router';
 import { useEffect } from 'react';
 
 import Loader from '@/components/Loader';
@@ -20,7 +20,7 @@ export default function AuthRedirector({ children }: { children: React.ReactNode
 
     if (!user && inAuthenticatedGroup) {
       console.log('Redirecting to / from AuthRedirector....');
-      router.replace('/(public)');
+      router.replace('/');
     }
 
     if (user && inPublicGroup) {

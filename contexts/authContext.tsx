@@ -14,7 +14,6 @@ export function AuthContextProvider({ children }: { children: Readonly<ReactNode
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(firebaseAuth, async (authUser) => {
-      console.log('Auth Changed.....', { authUser });
       setLoading(true);
       setUser(authUser);
       setLoading(false);

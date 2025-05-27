@@ -2,6 +2,7 @@ import { CreateLoanFields, CreatePaymentFields, Loan, Payment } from '@/types';
 import { db } from '@/utils/firebaseConfig';
 import {
   addDoc,
+  arrayUnion,
   collection,
   doc,
   getDoc,
@@ -9,6 +10,7 @@ import {
   orderBy,
   query,
   Timestamp,
+  updateDoc,
 } from 'firebase/firestore';
 
 export async function addNewLoan(loan: CreateLoanFields) {
@@ -48,13 +50,7 @@ export async function getLoanById(id: string): Promise<Loan | null> {
     const result = await getDoc(doc(db, 'loans', id));
     if (!result.exists()) return null;
 
-    const paymentsResult = await getDocs(
-      query(collection(db, 'loans', id, 'payments'), orderBy('date', 'desc'))
-    );
-
-    const payments = paymentsResult.docs.map((doc) => ({ id: doc.id, ...doc.data() } as Payment));
-
-    return { id: result.id, ...result.data(), payments } as Loan;
+    return { id: result.id, ...result.data() } as Loan;
   } catch (error) {
     throw new Error('Error getting loan: ' + error);
   }
@@ -63,17 +59,27 @@ export async function getLoanById(id: string): Promise<Loan | null> {
 export async function addLoanPayment(
   loanId: string,
   payment: CreatePaymentFields
-): Promise<Payment | null> {
+): Promise<Loan | null> {
   if (!payment.title || !payment.amount || !payment.date) {
     throw new Error('There are required fields missing');
   }
 
   try {
-    const docRef = await addDoc(collection(db, 'loans', loanId, 'payments'), payment);
-    const docData = await getDoc(docRef);
+    const docRef = doc(db, 'loans', loanId);
+    const paymentId = doc(collection(db, '_')).id;
 
+    await updateDoc(docRef, {
+      payments: arrayUnion({
+        ...payment,
+        id: paymentId,
+        date: Timestamp.fromDate(payment.date),
+      }),
+    });
+
+    const docData = await getDoc(docRef);
     if (!docData.exists()) return null;
-    return { id: docRef.id, ...docData.data() } as Payment;
+
+    return { id: docData.id, ...docData.data() } as Loan;
   } catch (error) {
     console.log({ error });
     throw new Error('Error creating payment');

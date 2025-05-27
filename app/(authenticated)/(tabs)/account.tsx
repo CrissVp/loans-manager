@@ -5,7 +5,6 @@ import useAuth from '@/hooks/useAuth';
 
 export default function Account() {
   const { user, logOut } = useAuth();
-  console.log({ user });
 
   if (!user) return;
 
